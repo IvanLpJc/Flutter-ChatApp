@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taichat/ui/pages/pages.dart';
 
-const initialRoute = LoginPage.route;
+const initialRoute = ChatPage.route;
 
 final Map<String, Widget Function(BuildContext)> appRoutes = {
   UsersPage.route: (_) => const UsersPage(),
