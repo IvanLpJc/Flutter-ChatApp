@@ -1,0 +1,67 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "taichat",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "taichat (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "taichat (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Flutter-All",
+            "preLaunchTask": "Flutter-Launch-All",
+            "type": "dart",
+            "request": "launch",
+        },
+        {
+            "name": "Flutter-Mobile",
+            "preLaunchTask": "Flutter-Launch-Mobile",
+            "type": "dart",
+            "request": "launch",
+        },
+        {
+            "name": "Flutter-All-Phone",
+            "preLaunchTask": "Flutter-Launch-All-Phone",
+            "type": "dart",
+            "request": "launch",
+        },
+        {
+            "name": "Flutter-Tablet",
+            "preLaunchTask": "Flutter-Launch-Tablet",
+            "type": "dart",
+            "request": "launch",
+        },
+        {
+            "name": "Flutter-Miui",
+            "preLaunchTask": "Flutter-Launch-Miui",
+            "type": "dart",
+            "request": "launch",
+        },
+        {
+            "name": "Flutter-Samsung",
+            "preLaunchTask": "Flutter-Launch-Samsung",
+            "type": "dart",
+            "request": "launch",
+        },
+        {
+            "name": "Flutter-Web",
+            "preLaunchTask": "Flutter-Launch-Web",
+            "type": "dart",
+            "request": "launch",
+        }
+    ]
+}

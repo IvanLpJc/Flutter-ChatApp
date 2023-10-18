@@ -1,0 +1,47 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flutter-Launch-All",
+            "dependsOn": [
+                "Flutter-Launch-Tablet",
+                "Flutter-Launch-Samsung",
+                "Flutter-Launch-Web"
+            ]
+        },
+        {
+            "label": "Flutter-Launch-Mobile",
+            "dependsOn": [
+                "Flutter-Launch-Samsung",
+                "Flutter-Launch-Tablet"
+            ]
+        },
+        {
+            "label": "Flutter-Launch-All-Phone",
+            "dependsOn": [
+                "Flutter-Launch-Samsung",
+                "Flutter-Launch-Miui"
+            ]
+        },
+        {
+            "label": "Flutter-Launch-Samsung",
+            "type": "shell",
+            "command": "flutter run -d 'SM S911B' "
+        },
+        {
+            "label": "Flutter-Launch-Miui",
+            "type": "shell",
+            "command": "flutter run -d 'M2007J20CG' "
+        },
+        {
+            "label": "Flutter-Launch-Tablet",
+            "type": "shell",
+            "command": "flutter run -d 'emulator-5554'"
+        },
+        {
+            "label": "Flutter-Launch-Web",
+            "type": "shell",
+            "command": "flutter run -d 'Chrome' "
+        }
+    ]
+}
