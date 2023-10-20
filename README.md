@@ -6,4 +6,4 @@ Chat application with real time communication.
 
 ## Section 1: Login and Sign up screens
 
-<img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demo.gif" width=200px> 
+<img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demo-v1.gif" width=200px> 
