@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app/ui/widgets/message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +12,20 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
+  bool _isTyping = false;
+
+  List<Message> _messages = [];
+
   @override
   void dispose() {
+    //TODO Disconnect socket listener for the chat
+    for (Message message in _messages) {
+      message.animationController.dispose();
+    }
     _textController.dispose();
     super.dispose();
   }
@@ -56,10 +65,11 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             Flexible(
               child: ListView.builder(
-                  reverse: true,
-                  itemCount: 100,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (_, index) => Text('$index')),
+                reverse: true,
+                itemCount: _messages.length,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (_, index) => _messages[index],
+              ),
             ),
             const Divider(
               height: 1,
@@ -84,25 +94,36 @@ class _ChatPageState extends State<ChatPage> {
                 controller: _textController,
                 onSubmitted: _handleSubmit,
                 onChanged: (String text) {
-                  //TODO I need to know when there is text
+                  setState(() {
+                    _isTyping = text.trim().isNotEmpty;
+                  });
                 },
                 decoration:
-                    InputDecoration.collapsed(hintText: 'Send a message'),
+                    const InputDecoration.collapsed(hintText: 'Send a message'),
                 focusNode: _focusNode,
               ),
             ),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Platform.isIOS
-                  ? CupertinoButton(child: Text('Send'), onPressed: () {})
+                  ? CupertinoButton(
+                      onPressed: _isTyping
+                          ? () => _handleSubmit(_textController.text.trim())
+                          : null,
+                      child: const Text('Send'),
+                    )
                   : Container(
                       margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.send,
-                          color: Colors.blue[600],
+                      child: IconTheme(
+                        data: IconThemeData(color: Colors.blue[600]),
+                        child: IconButton(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          icon: const Icon(Icons.send),
+                          onPressed: _isTyping
+                              ? () => _handleSubmit(_textController.text.trim())
+                              : null,
                         ),
-                        onPressed: () {},
                       ),
                     ),
             )
@@ -113,8 +134,23 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   _handleSubmit(String text) {
-    print(text);
+    if (text.isEmpty) return;
+
     _focusNode.requestFocus();
     _textController.clear();
+
+    final Message newMessage = Message(
+      message: text,
+      uuid: "123",
+      animationController: AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 250),
+      ),
+    );
+    _messages.insert(0, newMessage);
+    newMessage.animationController.forward();
+    setState(() {
+      _isTyping = false;
+    });
   }
 }

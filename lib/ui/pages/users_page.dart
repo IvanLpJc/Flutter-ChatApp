@@ -1,6 +1,7 @@
+import 'package:chat_app/ui/pages/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:taichat/models/users.dart';
+import 'package:chat_app/models/users.dart';
 
 class UsersPage extends StatefulWidget {
   static const String route = 'users_page';
@@ -110,6 +111,7 @@ class _UserListTile extends StatelessWidget {
           user.name.substring(0, 2),
         ),
       ),
+      onTap: () => Navigator.pushNamed(context, ChatPage.route),
       trailing: Container(
         width: 10,
         height: 10,
