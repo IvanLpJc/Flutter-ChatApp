@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:taichat/ui/pages/pages.dart';
-import 'package:taichat/ui/widgets/widgets.dart';
+import 'package:chat_app/ui/pages/pages.dart';
+import 'package:chat_app/ui/widgets/widgets.dart';
 
 class LoginPage extends StatelessWidget {
   static const String route = 'login_page';
