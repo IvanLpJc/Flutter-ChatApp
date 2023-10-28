@@ -8,9 +8,19 @@ import 'package:chat_app/global/environment.dart';
 import 'package:chat_app/models/login_response.dart';
 import 'package:chat_app/models/user.dart';
 
+final urls = {
+  'login': '${Environment.baseApiUrl}/login',
+  'signup': '${Environment.baseApiUrl}/login/create_user',
+  'renew_token': '${Environment.baseApiUrl}/login/renew_token',
+};
+
+enum AuthState { authenticated, unauthenticated, authenticationError }
+
 class AuthService with ChangeNotifier {
   late User user;
   bool _isAuthenticating = false;
+
+  AuthState _authState = AuthState.unauthenticated;
 
   final _secureStorage = const FlutterSecureStorage();
 
@@ -21,6 +31,13 @@ class AuthService with ChangeNotifier {
     notifyListeners();
   }
 
+  AuthState get authState => _authState;
+
+  set authState(AuthState state) {
+    _authState = state;
+    notifyListeners();
+  }
+
   // Token static getters and setters
   static Future<String?> getToken() async {
     const secureStorage = FlutterSecureStorage();
@@ -28,27 +45,23 @@ class AuthService with ChangeNotifier {
     return token;
   }
 
-  static Future<void> removeToken() async {
-    const secureStorage = FlutterSecureStorage();
-    await secureStorage.delete(key: 'token');
-  }
-
   Future<bool> login(String email, String password) async {
     isAuthenticating = true;
+
     final data = {
       "email": email,
       "password": password,
     };
 
-    final url = '${Environment.baseApiUrl}/login';
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode(data);
 
     try {
-      final resp =
-          await http.post(Uri.parse(url), headers: headers, body: body);
+      final resp = await http.post(Uri.parse(urls['login']!),
+          headers: headers, body: body);
+
       isAuthenticating = false;
-      await Future.delayed(const Duration(seconds: 1));
+
       if (resp.statusCode == 200) {
         final loginResponse = LoginResponse.fromJson(jsonDecode(resp.body));
         user = loginResponse.user;
@@ -73,14 +86,12 @@ class AuthService with ChangeNotifier {
       "password": password,
     };
 
-    final url = '${Environment.baseApiUrl}/login/create_user';
-
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode(data);
 
     try {
-      final resp =
-          await http.post(Uri.parse(url), headers: headers, body: body);
+      final resp = await http.post(Uri.parse(urls['signup']!),
+          headers: headers, body: body);
 
       isAuthenticating = false;
       await Future.delayed(const Duration(seconds: 1));
@@ -108,12 +119,10 @@ class AuthService with ChangeNotifier {
     }
 
     try {
-      final url = '${Environment.baseApiUrl}/login/renew_token';
-
       final headers = {'Content-Type': 'application/json', 'X-Token': token};
 
       final resp = await http.get(
-        Uri.parse(url),
+        Uri.parse(urls['renew_token']!),
         headers: headers,
       );
 
@@ -125,6 +134,9 @@ class AuthService with ChangeNotifier {
         user = response.user;
 
         await _saveToken(response.token);
+
+        // Delayed to show the loading animation
+        await Future.delayed(const Duration(seconds: 2));
 
         return true;
       } else {

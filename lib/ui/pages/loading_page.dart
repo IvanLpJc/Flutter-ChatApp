@@ -1,6 +1,7 @@
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/ui/pages/pages.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class LoadingPage extends StatelessWidget {
@@ -39,8 +40,8 @@ class LoadingPage extends StatelessWidget {
       body: FutureBuilder(
         future: checkLoginState(context),
         builder: (context, snapshot) {
-          return const Center(
-            child: Text('Espere...'),
+          return Center(
+            child: Lottie.asset('assets/loading.json'),
           );
         },
       ),

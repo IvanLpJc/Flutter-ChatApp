@@ -93,7 +93,6 @@ class __LoginFormState extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final isAuthenticating = Provider.of<AuthService>(context).isAuthenticating;
     return Container(
       margin: const EdgeInsets.only(top: 30),
       padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -142,32 +141,22 @@ class __LoginFormState extends State<_LoginForm> {
             height: 5,
           ),
           BlueButton(
-            onPressed: isAuthenticating
-                ? null
-                : () async {
-                    FocusScope.of(context).unfocus();
-                    final authService =
-                        Provider.of<AuthService>(context, listen: false);
+            onPressed: () async {
+              FocusScope.of(context).unfocus();
+              final authService =
+                  Provider.of<AuthService>(context, listen: false);
+              final loginOk = await authService.login(
+                  emailController.text.trim(), passController.text.trim());
 
-                    showLoading(context,
-                        title: 'Loggin in', subtitle: 'Please wait...');
-                    final loginOk = await authService.login(
-                        emailController.text.trim(),
-                        passController.text.trim());
-
-                    if (loginOk) {
-                      hideLoading(context);
-                      Navigator.pushReplacementNamed(context, 'users_page');
-                    } else {
-                      hideLoading(context);
-
-                      // ignore: use_build_context_synchronously
-                      //TODO: Change this.
-                      showAlert(context,
-                          title: 'Login unsuccessful!',
-                          subtitle: 'Make sure the credentials are correct');
-                    }
-                  },
+              if (loginOk) {
+                Navigator.pushReplacementNamed(context, 'users_page');
+              } else {
+                //TODO: Change this.
+                showAlert(context,
+                    title: 'Login unsuccessful!',
+                    subtitle: 'Make sure the credentials are correct');
+              }
+            },
             text: 'Login',
           ),
         ],
