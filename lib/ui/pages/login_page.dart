@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/ui/helpers/dialogs.dart';
-import 'package:flutter/material.dart';
 import 'package:chat_app/ui/pages/pages.dart';
 import 'package:chat_app/ui/widgets/widgets.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   static const String route = 'login_page';
@@ -148,14 +149,18 @@ class __LoginFormState extends State<_LoginForm> {
                     final authService =
                         Provider.of<AuthService>(context, listen: false);
 
+                    showLoading(context,
+                        title: 'Loggin in', subtitle: 'Please wait...');
                     final loginOk = await authService.login(
                         emailController.text.trim(),
                         passController.text.trim());
 
                     if (loginOk) {
-                      //TODO connect with sockets
+                      hideLoading(context);
                       Navigator.pushReplacementNamed(context, 'users_page');
                     } else {
+                      hideLoading(context);
+
                       // ignore: use_build_context_synchronously
                       //TODO: Change this.
                       showAlert(context,

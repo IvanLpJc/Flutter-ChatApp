@@ -49,9 +49,10 @@ showLoading(BuildContext context,
       context: context,
       builder: (_) {
         return const Dialog(
+          backgroundColor: Colors.transparent,
           shape: RoundedRectangleBorder(),
-          elevation: 5,
-          child: CircularProgressIndicator(),
+          elevation: 0,
+          child: Center(child: CircularProgressIndicator()),
         );
       });
 }

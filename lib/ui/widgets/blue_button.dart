@@ -9,6 +9,7 @@ class BlueButton extends StatelessWidget {
   final ButtonStyle buttonStyle = TextButton.styleFrom(
       elevation: 2,
       foregroundColor: Colors.white,
+      backgroundColor: Colors.blue,
       minimumSize: const Size(88, 36),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       shape: const StadiumBorder());
@@ -16,15 +17,7 @@ class BlueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: buttonStyle.copyWith(
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if (onPressed == null) {
-            return Colors.grey;
-          } else {
-            return Colors.blue;
-          }
-        }),
-      ),
+      style: buttonStyle,
       onPressed: onPressed,
       child: SizedBox(
         width: double.infinity,

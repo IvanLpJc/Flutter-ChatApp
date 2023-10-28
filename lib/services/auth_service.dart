@@ -48,6 +48,7 @@ class AuthService with ChangeNotifier {
       final resp =
           await http.post(Uri.parse(url), headers: headers, body: body);
       isAuthenticating = false;
+      await Future.delayed(const Duration(seconds: 1));
       if (resp.statusCode == 200) {
         final loginResponse = LoginResponse.fromJson(jsonDecode(resp.body));
         user = loginResponse.user;
@@ -59,6 +60,79 @@ class AuthService with ChangeNotifier {
         return false;
       }
     } catch (exception) {
+      isAuthenticating = false;
+      throw Error.safeToString(exception);
+    }
+  }
+
+  Future<dynamic> signup(String name, String email, String password) async {
+    isAuthenticating = true;
+    final data = {
+      "name": name,
+      "email": email,
+      "password": password,
+    };
+
+    final url = '${Environment.baseApiUrl}/login/create_user';
+
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode(data);
+
+    try {
+      final resp =
+          await http.post(Uri.parse(url), headers: headers, body: body);
+
+      isAuthenticating = false;
+      await Future.delayed(const Duration(seconds: 1));
+      if (resp.statusCode == 200) {
+        final response = LoginResponse.fromJson(jsonDecode(resp.body));
+        user = response.user;
+
+        await _saveToken(response.token);
+
+        return true;
+      } else {
+        final respBody = jsonDecode(resp.body);
+        return respBody['msg'];
+      }
+    } catch (exception) {
+      isAuthenticating = false;
+      throw Error.safeToString(exception);
+    }
+  }
+
+  Future<dynamic> isLoggedIn() async {
+    final token = await _secureStorage.read(key: 'token');
+    if (token == null) {
+      return false;
+    }
+
+    try {
+      final url = '${Environment.baseApiUrl}/login/renew_token';
+
+      final headers = {'Content-Type': 'application/json', 'X-Token': token};
+
+      final resp = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
+
+      isAuthenticating = false;
+      await Future.delayed(const Duration(seconds: 1));
+
+      if (resp.statusCode == 200) {
+        final response = LoginResponse.fromJson(jsonDecode(resp.body));
+        user = response.user;
+
+        await _saveToken(response.token);
+
+        return true;
+      } else {
+        await logout();
+        return false;
+      }
+    } catch (exception) {
+      isAuthenticating = false;
       throw Error.safeToString(exception);
     }
   }

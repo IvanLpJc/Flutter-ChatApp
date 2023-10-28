@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chat_app/ui/pages/pages.dart';
 
-const initialRoute = LoginPage.route;
+const initialRoute = LoadingPage.route;
 
 final Map<String, Widget Function(BuildContext)> appRoutes = {
   UsersPage.route: (_) => const UsersPage(),
