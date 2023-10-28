@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:chat_app/services/auth_service.dart';
+import 'package:chat_app/ui/helpers/dialogs.dart';
 import 'package:chat_app/ui/pages/login_page.dart';
 import 'package:chat_app/ui/widgets/widgets.dart';
 
@@ -103,8 +107,16 @@ class __SignUpFormState extends State<_SignUpForm> {
     super.dispose();
   }
 
+  bool _validatePasswords() {
+    if (passController.text != repeatePassController.text) {
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isAuthenticating = Provider.of<AuthService>(context).isAuthenticating;
     return Container(
       margin: const EdgeInsets.only(top: 30),
       padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -169,7 +181,49 @@ class __SignUpFormState extends State<_SignUpForm> {
             height: 5,
           ),
           BlueButton(
-            onPressed: () {},
+            onPressed: isAuthenticating
+                ? null
+                : () async {
+                    if (!_validatePasswords()) {
+                      showAlert(context,
+                          title: 'Passwords does not match', subtitle: '');
+                    } else {
+                      FocusScope.of(context).unfocus();
+                      final authService =
+                          Provider.of<AuthService>(context, listen: false);
+                      showLoading(context,
+                          title: 'Loggin in', subtitle: 'Please wait...');
+                      final signUpOk = await authService.signup(
+                          nameController.text.trim(),
+                          emailController.text.trim(),
+                          passController.text.trim());
+
+                      if (signUpOk is bool && signUpOk) {
+                        hideLoading(context);
+
+                        //TODO connect with sockets
+
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushReplacementNamed(context, 'users_page');
+                      } else if (signUpOk is bool && !signUpOk) {
+                        hideLoading(context);
+                        //TODO: Change this.
+
+                        // ignore: use_build_context_synchronously
+                        showAlert(context,
+                            title: 'Signup unsuccessful!',
+                            subtitle:
+                                'Something went wrong, make sure information is valid.');
+                      } else {
+                        hideLoading(context);
+                        //TODO: Change this.
+
+                        // ignore: use_build_context_synchronously
+                        showAlert(context,
+                            title: 'Signup unsuccessful!', subtitle: signUpOk);
+                      }
+                    }
+                  },
             text: 'Create account',
           ),
         ],

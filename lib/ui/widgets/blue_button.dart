@@ -8,8 +8,8 @@ class BlueButton extends StatelessWidget {
 
   final ButtonStyle buttonStyle = TextButton.styleFrom(
       elevation: 2,
-      backgroundColor: Colors.blue,
       foregroundColor: Colors.white,
+      backgroundColor: Colors.blue,
       minimumSize: const Size(88, 36),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       shape: const StadiumBorder());

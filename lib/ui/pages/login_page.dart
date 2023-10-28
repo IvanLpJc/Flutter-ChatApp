@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:chat_app/services/auth_service.dart';
+import 'package:chat_app/ui/helpers/dialogs.dart';
 import 'package:chat_app/ui/pages/pages.dart';
 import 'package:chat_app/ui/widgets/widgets.dart';
 
@@ -137,7 +141,22 @@ class __LoginFormState extends State<_LoginForm> {
             height: 5,
           ),
           BlueButton(
-            onPressed: () {},
+            onPressed: () async {
+              FocusScope.of(context).unfocus();
+              final authService =
+                  Provider.of<AuthService>(context, listen: false);
+              final loginOk = await authService.login(
+                  emailController.text.trim(), passController.text.trim());
+
+              if (loginOk) {
+                Navigator.pushReplacementNamed(context, 'users_page');
+              } else {
+                //TODO: Change this.
+                showAlert(context,
+                    title: 'Login unsuccessful!',
+                    subtitle: 'Make sure the credentials are correct');
+              }
+            },
             text: 'Login',
           ),
         ],

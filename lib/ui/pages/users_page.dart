@@ -1,7 +1,10 @@
-import 'package:chat_app/ui/pages/chat_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:chat_app/models/users.dart';
+
+import 'package:chat_app/services/auth_service.dart';
+import 'package:chat_app/ui/pages/chat_page.dart';
+import 'package:chat_app/models/user.dart';
 
 class UsersPage extends StatefulWidget {
   static const String route = 'users_page';
@@ -33,17 +36,22 @@ class _UsersPageState extends State<UsersPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final user = authService.user;
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: const Text(
-          'User Name',
-          style: TextStyle(color: Colors.black87),
+        title: Text(
+          user.name,
+          style: const TextStyle(color: Colors.black87),
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            authService.logout();
+            Navigator.pushReplacementNamed(context, 'login_page');
+          },
           icon: Icon(
             Icons.exit_to_app,
             color: Colors.red[400],

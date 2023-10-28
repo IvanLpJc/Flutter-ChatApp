@@ -18,7 +18,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   bool _isTyping = false;
 
-  List<Message> _messages = [];
+  final List<Message> _messages = [];
 
   @override
   void dispose() {
@@ -60,23 +60,21 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
           ],
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Flexible(
-              child: ListView.builder(
-                reverse: true,
-                itemCount: _messages.length,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (_, index) => _messages[index],
-              ),
+      body: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+              reverse: true,
+              itemCount: _messages.length,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (_, index) => _messages[index],
             ),
-            const Divider(
-              height: 1,
-            ),
-            _inputChat()
-          ],
-        ),
+          ),
+          const Divider(
+            height: 1,
+          ),
+          _inputChat()
+        ],
       ),
     );
   }
