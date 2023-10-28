@@ -1,7 +1,7 @@
 import 'package:chat_app/ui/pages/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:chat_app/models/users.dart';
+import 'package:chat_app/models/user.dart';
 
 class UsersPage extends StatefulWidget {
   static const String route = 'users_page';
