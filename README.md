@@ -14,10 +14,6 @@ Chat application with real time communication.
 
 ## Section 9: Authentication
 
-<img src="demos\demo-loading.gif" width=200px>
-<img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demos/demo-login.gif" width=200px>
-<img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demos/demo-signup.gif" width=200px>
-
-<img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demos/demo-loading.gif" width=200px>
-<img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demos/demo-login.gif" width=200px>
-<img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demos/demo-signup.gif" width=200px>
+|                                               Loading                                                |                                               Login                                                |                                               Sign up                                               |
+| :--------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
+| <img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demos/demo-loading.gif" width=200px> | <img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demos/demo-login.gif" width=200px> | <img src="https://github.com/IvanLpJc/Flutter-ChatApp/blob/main/demos/demo-signup.gif" width=200px> |
